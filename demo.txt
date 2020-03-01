@@ -1,0 +1,18 @@
+package proj315;
+import java.util.LinkedList;
+
+public class demo {
+	public static void main(String [] args) {
+		BlockQueue <item> queue= new BlockQueue<>(10);
+		//N is the number of consumers required
+		int N=5;
+		//create a producer and start producing
+		Producer producer = new Producer(queue);
+		new Thread(producer).start();
+		//create a for loop to create several consumers and start consuming
+		for (int i = 0; i < N; i++){
+            new Thread(new Consumer(queue)).start();
+        }
+ 
+	}
+}

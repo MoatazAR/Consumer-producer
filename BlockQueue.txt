@@ -1,0 +1,58 @@
+package proj315;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+public class BlockQueue<E> {
+	private Queue<E> q = new LinkedList<E>();
+	//q is the buffer where producer submits items and consumers consume them
+	private int m = 10;
+	private ReentrantLock lock = new ReentrantLock(true);
+	//lock implemented for synchronization, to avoid a thread from interfering with each other
+	private Condition notEmpty = lock.newCondition();
+	//lock condition in case queue is full and producer cannot add items to queue
+	private Condition notFull = lock.newCondition();
+	//lock condition in case queue is empty and consumers cannot consume items from queue
+	public BlockQueue(int size) {
+		this.m=size;
+	}
+	public int size() {
+		int sizeOfQueue = q.size();
+		return sizeOfQueue;
+	}
+	public void put(E e) throws InterruptedException {
+		lock.lock();
+		try { 
+			if(q.size()==m) {
+				notFull.await();
+				//if queue is full, the producer (Master) thread is put in a waiting state since it cannot add anymore items to queue
+			}
+			q.add(e);
+			notEmpty.signalAll();
+			//after item e has been added to queue, method sends signal indicating that queue is not empty since an item has just been added
+		}
+		finally {
+			lock.unlock();
+		}
+		
+	}
+	public E take() throws InterruptedException{
+		lock.lock();
+		try {
+			//while loop is used to stop more than one thread from trying to take the same item
+			while(q.size()==0) {
+				notEmpty.await();
+			}
+			E removedItem= q.remove();
+			notFull.signalAll();
+			return removedItem;
+			//after removedItem is removed, method sends signal indicating that queue is not full since removedItem has just been removed
+		}
+		finally {
+			lock.unlock();
+		}
+	}
+	
+}

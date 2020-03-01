@@ -1,0 +1,12 @@
+package proj315;
+
+public class item {
+	private String itemString;
+	public item(String item) {
+		this.itemString=item;
+	}
+	public String getItem(){
+		return itemString;
+	}
+
+}

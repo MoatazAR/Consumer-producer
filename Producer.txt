@@ -1,0 +1,28 @@
+package proj315;
+
+public class Producer implements Runnable{
+	private BlockQueue<item> q;
+	public Producer(BlockQueue<item> queue) {
+		this.q=queue;
+	}
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		for(int i=0; i<15; i++) {
+			//producer produces items
+			item it = new item(" item no."+i);
+			try {
+				//add items produced by producer to queue
+				q.put(it);
+				Thread.sleep(100);
+				System.out.println("producer produces"+ it);
+				System.out.println(" number of occupied positions in queue: "+ q.size());
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+	}
+	
+}

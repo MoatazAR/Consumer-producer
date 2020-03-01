@@ -1,0 +1,27 @@
+package proj315;
+
+public class Consumer implements Runnable{
+	private BlockQueue<item> q;
+	public Consumer(BlockQueue<item> queue) {
+		this.q=queue;
+	}
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		item it;
+		try {
+			//it is the item taken by the corresponding consumer
+			it = q.take();
+			//run until returned item is null (the queue is empty)
+			while(it.getItem()!=null) {
+			Thread.sleep(100);
+	        System.out.println(it.getItem()+" is consumed ");
+	        System.out.println(" number of occupied positions in queue: "+ q.size());
+			}
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+}
