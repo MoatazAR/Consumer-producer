@@ -13,7 +13,7 @@ public class Consumer implements Runnable{
 			//it is the item taken by the corresponding consumer
 			it = q.take();
 			//run until returned item is null (the queue is empty)
-			while(it.getItem()!=null) {
+			while(it.getItem()!="last item") {
 			Thread.sleep(100);
 	        System.out.println(it.getItem()+" is consumed ");
 	        System.out.println(" number of occupied positions in queue: "+ q.size());

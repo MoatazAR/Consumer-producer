@@ -21,6 +21,12 @@ public class Producer implements Runnable{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			item it2 = new item("last item");
+	        try {
+	            q.put(it2);
+	        } catch (InterruptedException e) {
+	            e.printStackTrace();
+	        }
 		}
 		
 	}
